@@ -1,0 +1,121 @@
+<html>
+
+<head>
+
+</head>
+
+<body style="font-size:3em; font-family: Arial">
+    Dord.js is a library for words
+    <br>
+    1. <span class="dord" data-dord-type="vanilla">vanilla</span> <br>
+    2. <span class="dord" data-dord-type="shrink">shrinking</span> <br>
+    3. <span class="dord" data-dord-type="grow">growing</span> <br>
+    4. <span class="dord" data-dord-type="explode">exploding</span><br>
+
+
+    <script>
+        function insertCanvi() {
+            var dords = document.getElementsByClassName('dord');
+            for (z = 0; z < dords.length; z++) {
+                var dord = dords[z];
+                let width = dord.offsetWidth;
+                let height = dord.getBoundingClientRect().height;
+                let x = dord.getBoundingClientRect().left;
+                let y = dord.getBoundingClientRect().top;
+
+                var canvas = document.createElement('canvas');
+                canvas.width = width * 2;
+                canvas.style.width = width + 'px';
+                canvas.height = height * 2;
+                canvas.style.height = height + 'px';
+                canvas.classList.add('dord-canvas');
+                canvas.style.verticalAlign = 'bottom';
+                canvas.dataset.text = dord.textContent;
+                canvas.dataset.fontSize = window.getComputedStyle(dord).fontSize
+                canvas.dataset.fontFamily = window.getComputedStyle(dord).fontFamily
+                canvas.dataset.type = dord.dataset.dordType;
+
+                dord.parentNode.insertBefore(canvas, dord);
+                dord.style.display = 'none';
+                console.log(dord.textContent);
+            }
+        }
+
+        function renderCanvi() {
+            var canvi = document.getElementsByClassName('dord-canvas');
+            for (z = 0; z < canvi.length; z++) {
+                var canvas = canvi[z];
+                if (canvas.dataset.type == 'vanilla') {
+                    renderVanilla(canvas);
+                }
+                if (canvas.dataset.type == 'shrink') {
+                    renderShrink(canvas);
+                }
+                if (canvas.dataset.type == 'grow') {
+                    renderGrow(canvas);
+                }
+                if (canvas.dataset.type == 'explode') {
+                    renderExplode(canvas);
+                }
+
+            }
+        }
+        function renderVanilla(canvas) {
+            var ctx = canvas.getContext('2d');
+
+            var size = canvas.dataset.fontSize;
+            size = size.substring(0, size.length - 2);
+            ctx.font = size * 2 + "px " + canvas.dataset.fontFamily;
+            ctx.fillText(canvas.dataset.text, 0, size * 1.75);
+        }
+
+        function renderShrink(canvas) {
+            var ctx = canvas.getContext('2d');
+            var size = canvas.dataset.fontSize;
+            size = size.substring(0, size.length - 2);
+            let fontSize = size * 2;
+            let text = canvas.dataset.text;
+            var x = 0;
+            var sizeMult = 1;
+            for (i = 0; i < text.length; i++) {
+                ctx.font = (fontSize * sizeMult) + "px " + canvas.dataset.fontFamily;
+                console.log(ctx.measureText(text[i]).width);
+                ctx.fillText(text[i], x, (size * 1.75));
+                sizeMult -= (1 / text.length)
+                x += ctx.measureText(text[i]).width + (ctx.measureText(text).width / (text.length * 120));
+            }
+        }
+        function renderGrow(canvas) {
+            var ctx = canvas.getContext('2d');
+            var size = canvas.dataset.fontSize;
+            size = size.substring(0, size.length - 2);
+            let fontSize = size * 2;
+            let text = canvas.dataset.text;
+            var x = 0;
+            var sizeMult = .1;
+            for (i = 0; i < text.length; i++) {
+                ctx.font = (fontSize * sizeMult) + "px " + canvas.dataset.fontFamily;
+                console.log(ctx.measureText(text[i]).width);
+                ctx.fillText(text[i], x, (size * 1.75));
+                sizeMult += (1 / text.length)
+                x += ctx.measureText(text[i]).width + (ctx.measureText(text).width / (text.length * 120));
+            }
+        }
+        function renderExplode(canvas) {
+            var ctx = canvas.getContext('2d');
+            var size = canvas.dataset.fontSize;
+            size = size.substring(0, size.length - 2);
+            ctx.font = size * 2 + "px " + canvas.dataset.fontFamily;
+            ctx.fillText(canvas.dataset.text, 0, size * 1.75);
+            for (i = 0; i < 40; i++) {
+                var randomPart = ctx.getImageData(Math.random() * canvas.width, Math.random() * canvas.height, canvas.width / 10, canvas.width / 10);
+                ctx.putImageData(randomPart, Math.random() * canvas.width, Math.random() * canvas.height);
+            }
+            renderVanilla(canvas);
+        }
+        insertCanvi();
+        renderCanvi();
+    </script>
+</body>
+
+</html>
