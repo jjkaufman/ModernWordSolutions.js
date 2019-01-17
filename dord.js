@@ -1,12 +1,22 @@
 function insertCanvi() {
-    var dords = document.getElementsByClassName('dord');
-    for (z = 0; z < dords.length; z++) {
-        var dord = dords[z];
+    var types = ['vanilla', 'shrink', 'grow', 'explode', 'curve', 'spin', 'art', 'freedom', 'punch', 'wiggle', 'surprise', 'slam', 'squeeze','pulse'];
+
+    var dords = Array.from(document.getElementsByClassName('dord'))
+        // add the custom html tag versions
+        .concat(
+            [].concat.apply([],
+                types.map(type =>
+                    //retieve each type
+                    Array.from(document.getElementsByTagName(type))
+                        //insert dordType into type element to make compatible 
+                        .map(dord => { dord.dataset.dordType = type; return dord; })
+                )));
+
+    dords.forEach((dord) => {
         let width = dord.offsetWidth;
         let height = dord.getBoundingClientRect().height;
         let x = dord.getBoundingClientRect().left;
         let y = dord.getBoundingClientRect().top;
-
         var canvas = document.createElement('canvas');
         canvas.width = width * 2;
         canvas.style.width = width + 'px';
@@ -18,10 +28,10 @@ function insertCanvi() {
         canvas.dataset.fontSize = window.getComputedStyle(dord).fontSize
         canvas.dataset.fontFamily = window.getComputedStyle(dord).fontFamily
         canvas.dataset.type = dord.dataset.dordType;
-
         dord.parentNode.insertBefore(canvas, dord);
         dord.style.display = 'none';
-    }
+    })
+
 }
 
 function renderCanvi() {
@@ -60,6 +70,15 @@ function renderCanvi() {
         }
         if (canvas.dataset.type == 'surprise') {
             renderSurprise(canvas);
+        }
+        if (canvas.dataset.type == 'slam') {
+            renderSlam(canvas);
+        }
+        if (canvas.dataset.type == 'squeeze') {
+            renderSqueeze(canvas);
+        }
+        if (canvas.dataset.type == 'pulse') {
+            renderPulse(canvas);
         }
 
     }
@@ -148,13 +167,11 @@ function renderSpin(canvas) {
 
         ctx.fillText(text[i], x, (size * 1.75));
         var off = x + (64);
-        console.log(off);
         ctx.translate(off, canvas.height / 2);
         ctx.rotate(rotate);
         let z = ctx.measureText(text[i]).width + (ctx.measureText(text).width / (text.length * 120));
         ctx.translate(-off, -1 * canvas.height / 2);
         // rotate += .5;
-
         x += z;
     }
 }
@@ -236,19 +253,19 @@ function renderWiggle(canvas, frame = 0) {
     });
 
 }
+function isScrolledIntoView(el) {
+    var rect = el.getBoundingClientRect();
+    var elemTop = rect.top;
+    var elemBottom = rect.bottom;
 
+    // Only completely visible elements return true:
+    // var isVisible = (elemTop >= 0) && (elemBottom <= window.innerHeight);
+    // Partially visible elements return true:
+    isVisible = elemTop < window.innerHeight && elemBottom >= 0;
+    return isVisible;
+}
 function renderSurprise(canvas, frame = 0) {
-    function isScrolledIntoView(el) {
-        var rect = el.getBoundingClientRect();
-        var elemTop = rect.top;
-        var elemBottom = rect.bottom;
 
-        // Only completely visible elements return true:
-        // var isVisible = (elemTop >= 0) && (elemBottom <= window.innerHeight);
-        // Partially visible elements return true:
-        isVisible = elemTop < window.innerHeight && elemBottom >= 0;
-        return isVisible;
-    }
     if (!isScrolledIntoView(canvas)) {
         window.requestAnimationFrame(function () {
             frame = 0
@@ -279,5 +296,126 @@ function renderSurprise(canvas, frame = 0) {
     });
 
 }
+function renderSlam(canvas, frame = 0) {
+
+    if (!isScrolledIntoView(canvas)) {
+        window.requestAnimationFrame(function () {
+            frame = 0
+            renderSlam(canvas, frame);
+        });
+        return;
+    }
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    var size = canvas.dataset.fontSize;
+    size = size.substring(0, size.length - 2);
+    let fontSize = size * 2;
+    let text = canvas.dataset.text;
+    var x = 0;
+    for (i = 0; i < text.length; i++) {
+        height = fontSize / 16;
+        var newX = Math.min(-200 + (i + 5) * frame, x);
+        ctx.font = (fontSize) + "px " + canvas.dataset.fontFamily;
+        ctx.fillText(text[i], newX, size * 1.75);
+        x += ctx.measureText(text[i]).width + (ctx.measureText(text).width / (text.length * 120));
+    }
+
+    window.requestAnimationFrame(function () {
+        frame++
+        renderSlam(canvas, frame);
+    });
+
+}
+
+function renderGoodbye(canvas, frame = 0) {
+
+    if (!isScrolledIntoView(canvas)) {
+        window.requestAnimationFrame(function () {
+            frame = 0
+            renderSqueeze(canvas, frame);
+        });
+        return;
+    }
+    
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    var size = canvas.dataset.fontSize;
+    size = size.substring(0, size.length - 2);
+    ctx.font = size * 2 + "px " + canvas.dataset.fontFamily;
+    ctx.fillText(canvas.dataset.text, 0, size * 1.75);
+    ctx.scale(1 - (Math.abs(frame)/ 1000) , 1 - (Math.abs(frame)/1000));
+
+    window.requestAnimationFrame(function () {
+        if(frame > 500){
+            frame = -500;
+        }
+        frame++
+        renderSqueeze(canvas, frame);
+    });
+
+}
+
+
+function renderPulse(canvas, frame = 0) {
+
+    if (!isScrolledIntoView(canvas)) {
+        window.requestAnimationFrame(function () {
+            frame = 0
+            renderPulse(canvas, frame);
+        });
+        return;
+    }
+    console.log(frame);
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.scale(1- (frame/ 1000) , 1 - (frame/1000));
+    var size = canvas.dataset.fontSize;
+    size = size.substring(0, size.length - 2);
+    ctx.font = size * 2 + "px " + canvas.dataset.fontFamily;
+    ctx.fillText(canvas.dataset.text, 0, size * 1.75);
+
+
+    window.requestAnimationFrame(function () {
+        if(frame > 5){
+            frame = -7;
+        }
+        frame++
+        renderPulse(canvas, frame);
+    });
+
+}
+
+function renderSqueeze(canvas, frame = 0) {
+
+    if (!isScrolledIntoView(canvas)) {
+        window.requestAnimationFrame(function () {
+            frame = 0
+            renderSqueeze(canvas, frame);
+        });
+        return;
+    }
+    console.log(frame);
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.scale(1 , 1 - (frame/1000));
+    var size = canvas.dataset.fontSize;
+    size = size.substring(0, size.length - 2);
+    ctx.font = size * 2 + "px " + canvas.dataset.fontFamily;
+    ctx.fillText(canvas.dataset.text, 0, size * 1.75);
+
+
+    window.requestAnimationFrame(function () {
+        if(frame > 50){
+            5 -7 
+            50 -70
+            frame = -52;
+        }
+        frame++
+        renderSqueeze(canvas, frame);
+    });
+
+}
+
 insertCanvi();
 renderCanvi();
