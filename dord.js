@@ -1,5 +1,5 @@
 function insertCanvi() {
-    var types = ['vanilla', 'shrink', 'grow', 'explode', 'curve', 'spin', 'art', 'freedom', 'punch', 'wiggle', 'surprise', 'slam', 'squeeze','pulse'];
+    var types = ['vanilla', 'shrink', 'grow', 'explode', 'curve', 'spin', 'art', 'freedom', 'punch', 'wiggle', 'surprise', 'slam', 'squeeze','pulse', 'goodbye'];
 
     var dords = Array.from(document.getElementsByClassName('dord'))
         // add the custom html tag versions
@@ -79,6 +79,9 @@ function renderCanvi() {
         }
         if (canvas.dataset.type == 'pulse') {
             renderPulse(canvas);
+        }
+        if (canvas.dataset.type == 'goodbye') {
+            renderGoodbye(canvas);
         }
 
     }
@@ -333,7 +336,7 @@ function renderGoodbye(canvas, frame = 0) {
     if (!isScrolledIntoView(canvas)) {
         window.requestAnimationFrame(function () {
             frame = 0
-            renderSqueeze(canvas, frame);
+            renderGoodbye(canvas, frame);
         });
         return;
     }
@@ -347,11 +350,12 @@ function renderGoodbye(canvas, frame = 0) {
     ctx.scale(1 - (Math.abs(frame)/ 1000) , 1 - (Math.abs(frame)/1000));
 
     window.requestAnimationFrame(function () {
-        if(frame > 500){
-            frame = -500;
+        if(frame > 60){
+            frame = 0;
+            ctx.scale(43,43);
         }
-        frame++
-        renderSqueeze(canvas, frame);
+        frame += .5;
+        renderGoodbye(canvas, frame);
     });
 
 }
@@ -366,7 +370,6 @@ function renderPulse(canvas, frame = 0) {
         });
         return;
     }
-    console.log(frame);
     var ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.scale(1- (frame/ 1000) , 1 - (frame/1000));
@@ -395,7 +398,6 @@ function renderSqueeze(canvas, frame = 0) {
         });
         return;
     }
-    console.log(frame);
     var ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.scale(1 , 1 - (frame/1000));
@@ -407,9 +409,7 @@ function renderSqueeze(canvas, frame = 0) {
 
     window.requestAnimationFrame(function () {
         if(frame > 50){
-            5 -7 
-            50 -70
-            frame = -52;
+            frame = -52.45;
         }
         frame++
         renderSqueeze(canvas, frame);
