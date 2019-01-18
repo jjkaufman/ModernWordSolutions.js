@@ -1,5 +1,5 @@
 function insertCanvi() {
-    var types = ['vanilla', 'shrink', 'grow', 'explode', 'curve', 'spin', 'art', 'freedom', 'punch', 'wiggle', 'surprise', 'slam', 'squeeze','pulse', 'goodbye'];
+    var types = ['vanilla', 'shrink', 'grow', 'explode', 'curve', 'spin', 'art', 'freedom', 'punch', 'wiggle', 'surprise', 'slam', 'squeeze','pulse', 'goodbye', 'cross'];
 
     var dords = Array.from(document.getElementsByClassName('dord'))
         // add the custom html tag versions
@@ -25,8 +25,9 @@ function insertCanvi() {
         canvas.classList.add('dord-canvas');
         canvas.style.verticalAlign = 'bottom';
         canvas.dataset.text = dord.textContent;
-        canvas.dataset.fontSize = window.getComputedStyle(dord).fontSize
-        canvas.dataset.fontFamily = window.getComputedStyle(dord).fontFamily
+        canvas.dataset.fontSize = window.getComputedStyle(dord).fontSize;
+        canvas.dataset.fontFamily = window.getComputedStyle(dord).fontFamily;
+        canvas.dataset.color = window.getComputedStyle(dord).color;
         canvas.dataset.type = dord.dataset.dordType;
         dord.parentNode.insertBefore(canvas, dord);
         dord.style.display = 'none';
@@ -38,6 +39,8 @@ function renderCanvi() {
     var canvi = document.getElementsByClassName('dord-canvas');
     for (z = 0; z < canvi.length; z++) {
         var canvas = canvi[z];
+        var ctx = canvas.getContext('2d');
+        ctx.fillStyle = canvas.dataset.color;
         if (canvas.dataset.type == 'vanilla') {
             renderVanilla(canvas);
         }
@@ -82,6 +85,9 @@ function renderCanvi() {
         }
         if (canvas.dataset.type == 'goodbye') {
             renderGoodbye(canvas);
+        }
+        if (canvas.dataset.type == 'cross') {
+            renderCross(canvas);
         }
 
     }
@@ -247,7 +253,7 @@ function renderWiggle(canvas, frame = 0) {
 
         ctx.font = (fontSize) + "px " + canvas.dataset.fontFamily;
         ctx.fillText(text[i], x, y);
-        x += ctx.measureText(text[i]).width + (ctx.measureText(text).width / (text.length * 120));
+        x += (ctx.measureText(text[i]).width - (ctx.measureText(text).width / (text.length * 50)));
     }
 
     window.requestAnimationFrame(function () {
@@ -413,6 +419,40 @@ function renderSqueeze(canvas, frame = 0) {
         }
         frame++
         renderSqueeze(canvas, frame);
+    });
+
+}
+
+function renderCross(canvas, frame = 0) {
+
+    if (!isScrolledIntoView(canvas)) {
+        window.requestAnimationFrame(function () {
+            frame = 0
+            renderCross(canvas, frame);
+        });
+        return;
+    }
+    console.log(frame);
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+   
+
+    var size = canvas.dataset.fontSize;
+    size = size.substring(0, size.length - 2);
+    ctx.font = size * 2 + "px " + canvas.dataset.fontFamily;
+    ctx.fillText(canvas.dataset.text, 0, size * 1.75);
+
+    ctx.beginPath();
+    ctx.moveTo(0, canvas.height * .55);
+    ctx.lineWidth = canvas.height / 15;
+    ctx.lineTo(Math.min(frame,canvas.width), canvas.height * .55 - (canvas.height * .05 * (Math.min(frame,canvas.width) / canvas.width)));
+    ctx.strokeStyle = 'red'; 
+    ctx.stroke();
+
+    window.requestAnimationFrame(function () {
+        frame+=canvas.width / 30
+        renderCross(canvas, frame);
     });
 
 }
