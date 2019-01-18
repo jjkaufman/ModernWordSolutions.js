@@ -1,5 +1,5 @@
 function insertCanvi() {
-    var types = ['vanilla', 'shrink', 'grow', 'explode', 'curve', 'spin', 'art', 'freedom', 'punch', 'wiggle', 'surprise', 'slam', 'squeeze','pulse', 'goodbye', 'cross'];
+    var types = ['vanilla', 'shrink', 'grow', 'explode', 'curve', 'spin', 'art', 'freedom', 'punch', 'wiggle', 'surprise', 'slam', 'squeeze','pulse', 'goodbye', 'cross', 'luck'];
 
     var dords = Array.from(document.getElementsByClassName('dord'))
         // add the custom html tag versions
@@ -88,6 +88,9 @@ function renderCanvi() {
         }
         if (canvas.dataset.type == 'cross') {
             renderCross(canvas);
+        }
+        if (canvas.dataset.type == 'luck') {
+            renderLuck(canvas);
         }
 
     }
@@ -432,7 +435,6 @@ function renderCross(canvas, frame = 0) {
         });
         return;
     }
-    console.log(frame);
     var ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -453,6 +455,55 @@ function renderCross(canvas, frame = 0) {
     window.requestAnimationFrame(function () {
         frame+=canvas.width / 30
         renderCross(canvas, frame);
+    });
+
+}
+
+function renderLuck(canvas, frame = 0 ,iteration = 0) {
+    var icons = ["🍒","🔔","🎲","🍀"];
+    if (!isScrolledIntoView(canvas)) {
+        window.requestAnimationFrame(function () {
+            frame = 0;
+            iteration = 0;
+            renderLuck(canvas, frame,iteration);
+        });
+        return;
+    }
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    var size = canvas.dataset.fontSize;
+    size = size.substring(0, size.length - 2);
+    let fontSize = size * 2;
+    let text = canvas.dataset.text;
+    var x = 0;
+    for (i = 0; i < text.length; i++) {
+        height = fontSize / 16;
+        var y = canvas.height -  frame;
+
+        if(iteration < 5){
+        ctx.font = (fontSize * .4) + "px " + canvas.dataset.fontFamily;
+        ctx.fillText(icons[1] ,canvas.width / text.length * i, y + fontSize);
+        ctx.fillText(icons[2] ,canvas.width / text.length * i, y + fontSize * 2);
+        ctx.fillText(icons[0] ,canvas.width / text.length * i, y + fontSize * 3);
+        }else{
+            y = size * 1.75;
+        }
+
+        ctx.font = (fontSize) + "px " + canvas.dataset.fontFamily;
+        ctx.fillText(text[i], x, y);
+      
+        x += ctx.measureText(text[i]).width + (ctx.measureText(text).width / (text.length * 120));
+    }
+
+    window.requestAnimationFrame(function () {
+        frame+= (10 - (iteration*2));
+        if(frame > (fontSize * 4)){
+            frame=0;
+            iteration++;
+
+        }
+        renderLuck(canvas, frame,iteration);
     });
 
 }
