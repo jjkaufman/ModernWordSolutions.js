@@ -1,5 +1,5 @@
 function insertCanvi() {
-    var types = ['vanilla', 'shrink', 'grow', 'explode', 'curve', 'spin', 'art', 'freedom', 'punch', 'wiggle', 'surprise', 'slam', 'squeeze','pulse', 'goodbye', 'cross', 'luck'];
+    var types = ['vanilla', 'shrink', 'grow', 'explode', 'curve', 'spin', 'art', 'freedom', 'punch', 'wiggle', 'surprise', 'slam', 'squeeze', 'pulse', 'goodbye', 'cross', 'luck', 'ding', 'fill', 'spill', 'subwoofer', 'spotlight'];
 
     var dords = Array.from(document.getElementsByClassName('dord'))
         // add the custom html tag versions
@@ -91,6 +91,21 @@ function renderCanvi() {
         }
         if (canvas.dataset.type == 'luck') {
             renderLuck(canvas);
+        }
+        if (canvas.dataset.type == 'ding') {
+            renderDing(canvas);
+        }
+        if (canvas.dataset.type == 'fill') {
+            renderFill(canvas);
+        }
+        if (canvas.dataset.type == 'spill') {
+            renderSpill(canvas);
+        }
+        if (canvas.dataset.type == 'subwoofer') {
+            renderSubwoofer(canvas);
+        }
+        if (canvas.dataset.type == 'spotlight') {
+            renderSpotlight(canvas);
         }
 
     }
@@ -349,19 +364,19 @@ function renderGoodbye(canvas, frame = 0) {
         });
         return;
     }
-    
+
     var ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     var size = canvas.dataset.fontSize;
     size = size.substring(0, size.length - 2);
     ctx.font = size * 2 + "px " + canvas.dataset.fontFamily;
     ctx.fillText(canvas.dataset.text, 0, size * 1.75);
-    ctx.scale(1 - (Math.abs(frame)/ 1000) , 1 - (Math.abs(frame)/1000));
+    ctx.scale(1 - (Math.abs(frame) / 1000), 1 - (Math.abs(frame) / 1000));
 
     window.requestAnimationFrame(function () {
-        if(frame > 60){
+        if (frame > 60) {
             frame = 0;
-            ctx.scale(43,43);
+            ctx.scale(43, 43);
         }
         frame += .5;
         renderGoodbye(canvas, frame);
@@ -381,7 +396,7 @@ function renderPulse(canvas, frame = 0) {
     }
     var ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.scale(1- (frame/ 1000) , 1 - (frame/1000));
+    ctx.scale(1 - (frame / 1000), 1 - (frame / 1000));
     var size = canvas.dataset.fontSize;
     size = size.substring(0, size.length - 2);
     ctx.font = size * 2 + "px " + canvas.dataset.fontFamily;
@@ -389,7 +404,7 @@ function renderPulse(canvas, frame = 0) {
 
 
     window.requestAnimationFrame(function () {
-        if(frame > 5){
+        if (frame > 5) {
             frame = -7;
         }
         frame++
@@ -409,7 +424,7 @@ function renderSqueeze(canvas, frame = 0) {
     }
     var ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.scale(1 , 1 - (frame/1000));
+    ctx.scale(1, 1 - (frame / 1000));
     var size = canvas.dataset.fontSize;
     size = size.substring(0, size.length - 2);
     ctx.font = size * 2 + "px " + canvas.dataset.fontFamily;
@@ -417,7 +432,7 @@ function renderSqueeze(canvas, frame = 0) {
 
 
     window.requestAnimationFrame(function () {
-        if(frame > 50){
+        if (frame > 50) {
             frame = -52.45;
         }
         frame++
@@ -438,7 +453,7 @@ function renderCross(canvas, frame = 0) {
     var ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-   
+
 
     var size = canvas.dataset.fontSize;
     size = size.substring(0, size.length - 2);
@@ -448,24 +463,32 @@ function renderCross(canvas, frame = 0) {
     ctx.beginPath();
     ctx.moveTo(0, canvas.height * .55);
     ctx.lineWidth = canvas.height / 15;
-    ctx.lineTo(Math.min(frame,canvas.width), canvas.height * .55 - (canvas.height * .05 * (Math.min(frame,canvas.width) / canvas.width)));
-    ctx.strokeStyle = 'red'; 
+    ctx.lineTo(Math.min(frame, canvas.width), canvas.height * .55 - (canvas.height * .05 * (Math.min(frame, canvas.width) / canvas.width)));
+    ctx.strokeStyle = 'red';
     ctx.stroke();
 
     window.requestAnimationFrame(function () {
-        frame+=canvas.width / 30
-        renderCross(canvas, frame);
+        frame += canvas.width / 30
+        if(frame > canvas.width){
+        setTimeout(function(){
+            frame = 0;
+            renderCross(canvas, frame);
+        }, 2000);
+    }
+     else{
+       renderCross(canvas, frame);
+     }
     });
 
 }
 
-function renderLuck(canvas, frame = 0 ,iteration = 0) {
-    var icons = ["🍒","🔔","🎲","🍀"];
+function renderLuck(canvas, frame = 0, iteration = 0, slots = []) {
+    var icons = ["🍒", "🔔", "🎲", "🍀"];
     if (!isScrolledIntoView(canvas)) {
         window.requestAnimationFrame(function () {
             frame = 0;
             iteration = 0;
-            renderLuck(canvas, frame,iteration);
+            renderLuck(canvas, frame, iteration);
         });
         return;
     }
@@ -479,34 +502,210 @@ function renderLuck(canvas, frame = 0 ,iteration = 0) {
     var x = 0;
     for (i = 0; i < text.length; i++) {
         height = fontSize / 16;
-        var y = canvas.height -  frame;
+        var y = canvas.height - frame;
 
-        if(iteration < 5){
-        ctx.font = (fontSize * .4) + "px " + canvas.dataset.fontFamily;
-        ctx.fillText(icons[1] ,canvas.width / text.length * i, y + fontSize);
-        ctx.fillText(icons[2] ,canvas.width / text.length * i, y + fontSize * 2);
-        ctx.fillText(icons[0] ,canvas.width / text.length * i, y + fontSize * 3);
-        }else{
+        if (iteration < 5) {
+            ctx.font = (fontSize * .4) + "px " + canvas.dataset.fontFamily;
+            if (slots.length - 1 <= i) {
+                slots.push([icons[Math.floor(Math.random() * 3)], icons[Math.floor(Math.random() * 3)], icons[Math.floor(Math.random() * 3)]]);
+            }
+            ctx.fillText(slots[i][0], canvas.width / text.length * i, y + fontSize);
+            ctx.fillText(slots[i][1], canvas.width / text.length * i, y + fontSize * 2);
+            ctx.fillText(slots[i][2], canvas.width / text.length * i, y + fontSize * 3);
+        } else {
             y = size * 1.75;
         }
 
         ctx.font = (fontSize) + "px " + canvas.dataset.fontFamily;
         ctx.fillText(text[i], x, y);
-      
+
         x += ctx.measureText(text[i]).width + (ctx.measureText(text).width / (text.length * 120));
     }
 
     window.requestAnimationFrame(function () {
-        frame+= (10 - (iteration*2));
-        if(frame > (fontSize * 4)){
-            frame=0;
+        frame += (10 - (iteration * 2));
+        if (frame > (fontSize * 4)) {
+            frame = 0;
             iteration++;
-
+            renderLuck(canvas, frame, iteration, slots);
+            return ;
         }
-        renderLuck(canvas, frame,iteration);
+        if(iteration >= 5){
+            setTimeout(function(){
+                iteration = 0;
+                frame = 0;
+                renderLuck(canvas, frame, iteration, slots);
+
+            }, 2000);
+        }
+        else{
+            renderLuck(canvas, frame, iteration, slots);
+        }
+    });
+
+}
+function renderDing(canvas, frame = 0) {
+
+    if (!isScrolledIntoView(canvas)) {
+        window.requestAnimationFrame(function () {
+            frame = 0
+            renderDing(canvas, frame);
+        });
+        return;
+    }
+
+    var skull = '☠';
+
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    var size = canvas.dataset.fontSize;
+    size = size.substring(0, size.length - 2);
+
+    let text = canvas.dataset.text;
+
+    var x = 0;
+    for (i = 0; i < text.length; i++) {
+        height = size / 16;
+        ctx.font = (size * (frame % 60 < 20 ? 1 : 2)) + "px " + canvas.dataset.fontFamily;
+        ctx.fillText(frame % 60 < 20 ? skull : text[i], frame % 60 < 20 ? i * canvas.width / text.length : x, size * 1.75);
+        x += ctx.measureText(text[i]).width + (ctx.measureText(text).width / (text.length * 120));
+    }
+
+    window.requestAnimationFrame(function () {
+        if (frame >= 120) {
+            frame = 0;
+        }
+        frame += 1;
+        renderDing(canvas, frame);
     });
 
 }
 
+
+function renderFill(canvas, frame = 0) {
+
+    if (!isScrolledIntoView(canvas)) {
+        window.requestAnimationFrame(function () {
+            frame = 0
+            renderFill(canvas, frame);
+        });
+        return;
+    }
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    var size = canvas.dataset.fontSize;
+    size = size.substring(0, size.length - 2);
+    ctx.font = size * 2 + "px " + canvas.dataset.fontFamily;
+    ctx.fillText(canvas.dataset.text, 0, size * 1.75);
+    ctx.clearRect(0, 0, canvas.width, canvas.height - frame);
+
+    ctx.strokeText(canvas.dataset.text, 0, size * 1.75);
+
+    window.requestAnimationFrame(function () {
+        frame += canvas.width / 2000;
+        if (frame > canvas.height) {
+            frame = 0;
+        }
+        renderFill(canvas, frame);
+    });
+
+}
+
+
+function renderSpill(canvas, frame = 0) {
+
+    if (!isScrolledIntoView(canvas)) {
+        window.requestAnimationFrame(function () {
+            frame = 0
+            renderSpill(canvas, frame);
+        });
+        return;
+    }
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    var size = canvas.dataset.fontSize;
+    size = size.substring(0, size.length - 2);
+    ctx.font = size * 2 + "px " + canvas.dataset.fontFamily;
+    ctx.fillText(canvas.dataset.text, 0, size * 1.75);
+    ctx.clearRect(frame, 0, canvas.width - frame, canvas.height);
+    ctx.strokeText(canvas.dataset.text, 0, size * 1.75);
+
+    window.requestAnimationFrame(function () {
+        frame += canvas.width / 150;
+        if (frame > canvas.width) {
+            frame = 0;
+        }
+        renderSpill(canvas, frame);
+    });
+
+}
+
+function renderSubwoofer(canvas, frame = 0) {
+
+    if (!isScrolledIntoView(canvas)) {
+        window.requestAnimationFrame(function () {
+            frame = 0
+            renderSubwoofer(canvas, frame);
+        });
+        return;
+    }
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    var size = canvas.dataset.fontSize;
+    size = size.substring(0, size.length - 2);
+    ctx.font = size * 2 + "px " + canvas.dataset.fontFamily;
+    ctx.shadowOffsetX = Math.abs(frame);
+    ctx.shadowOffsetY = 0;
+    ctx.shadowColor = 'grey';
+    ctx.shadowBlur = 3;
+    ctx.fillText(canvas.dataset.text, 0, size * 1.75);
+
+
+
+
+    window.requestAnimationFrame(function () {
+        frame += 1
+        if (frame > 10) {
+            frame = -10;
+        }
+        renderSubwoofer(canvas, frame);
+    });
+}
+
+function renderSpotlight(canvas, frame = 0, direction = 1) {
+
+    if (!isScrolledIntoView(canvas)) {
+        window.requestAnimationFrame(function () {
+            frame = 0
+            renderSpotlight(canvas, frame);
+        });
+        return;
+    }
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    var size = canvas.dataset.fontSize;
+    size = size.substring(0, size.length - 2);
+    ctx.font = size * 2 + "px " + canvas.dataset.fontFamily;
+    ctx.shadowOffsetX = frame;
+    ctx.shadowOffsetY = 5;
+    ctx.shadowColor = 'grey';
+    ctx.shadowBlur = 3;
+    ctx.fillText(canvas.dataset.text, 0, size * 1.75);
+
+
+
+
+    window.requestAnimationFrame(function () {
+        frame += .2 * direction
+        if (Math.abs(frame) > 15) {
+            direction = direction * -1;
+        }
+        renderSpotlight(canvas, frame, direction);
+    });
+}
 insertCanvi();
 renderCanvi();
