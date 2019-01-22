@@ -827,7 +827,7 @@ function renderWater(canvas) {
     ctx.fillText(canvas.dataset.text, 0, size * 1.75);
     var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     console.log(size);
-    var fx = Underwater(canvas, size / 16 * 3, .6 * 10);
+    var fx = Underwater(canvas, size / 16 , .6 );
     fx.start();
 
     //edits made to original from https://github.com/fffaraz/Etcetera
