@@ -1,5 +1,5 @@
 function insertCanvi() {
-    var types = ['water', 'vanilla', 'shrink', 'grow', 'explode', 'curve', 'spin', 'art', 'freedom', 'punch', 'wiggle', 'surprise', 'slam', 'squeeze', 'pulse', 'goodbye', 'cross', 'luck', 'ding', 'fill', 'spill', 'subwoofer', 'spotlight', 'fire'];
+    var types = ['neon', 'water', 'vanilla', 'shrink', 'grow', 'explode', 'curve', 'spin', 'art', 'freedom', 'punch', 'wiggle', 'surprise', 'slam', 'squeeze', 'pulse', 'goodbye', 'cross', 'luck', 'ding', 'fill', 'spill', 'subwoofer', 'spotlight', 'fire'];
 
     var dords = Array.from(document.getElementsByClassName('dord'))
         // add the custom html tag versions
@@ -119,6 +119,9 @@ function renderCanvi() {
         }
         if (canvas.dataset.type == 'water') {
             renderWater(canvas);
+        }
+        if (canvas.dataset.type == 'neon') {
+            renderNeon(canvas);
         }
 
     }
@@ -891,6 +894,42 @@ function renderWater(canvas) {
             start: start
         };
     }
+}
+
+
+function renderNeon(canvas, frame = 5) {
+    if (!isScrolledIntoView(canvas)) {
+        window.requestAnimationFrame(function () {
+            frame = 0
+            renderNeon(canvas, frame);
+        });
+        return;
+    }
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // ctx.scale(1, 1 - (frame / 1000));
+    var size = canvas.dataset.fontSize;
+    size = size.substring(0, size.length - 2);
+    ctx.font = size * 2 + "px " + canvas.dataset.fontFamily;
+   
+    for(i = 0 ; i < frame ; i += .7){
+        ctx.shadowBlur = i*i / 5;
+    ctx.shadowColor = 'purple';
+    ctx.shadowOffsetX = 0;
+    ctx.shadowOffsetY = 0;
+    ctx.fillStyle = 'purple';
+    ctx.strokeText(canvas.dataset.text, 0, size * 1.75);
+    }
+    ctx.strokeText(canvas.dataset.text, 0, size * 1.75);
+
+    window.requestAnimationFrame(function () {
+        frame+=.1  
+        if(frame > 10){
+            frame =5 ;
+        }
+        renderNeon(canvas, frame);
+    });
+ 
 }
 
 insertCanvi();
