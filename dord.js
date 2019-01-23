@@ -6,9 +6,41 @@ function isScrolledIntoView(el) {
     isVisible = elemTop < window.innerHeight && elemBottom >= 0;
     return isVisible;
 }
+function insertCanvas(dord){
+    let width = dord.offsetWidth;
+    let height = dord.getBoundingClientRect().height;
+    let x = dord.getBoundingClientRect().left;
+    let y = dord.getBoundingClientRect().top;
 
+    var canvas = document.createElement("canvas");
+    canvas.width = width * 2;
+
+    dordStyle = window.getComputedStyle(dord);
+
+    canvas.style.verticalAlign = "bottom";
+
+    canvas.style.width = width + "px";
+    canvas.height = height * 2;
+    canvas.style.height = height + "px";
+    canvas.classList.add("dord-canvas");
+    canvas.dataset.text = dord.textContent;
+    canvas.dataset.fontSize = dordStyle.fontSize;
+
+    var size = dordStyle.fontSize;
+    size = size.substring(0, size.length - 2);
+    canvas.dataset.trueSize = size * 2;
+    canvas.dataset.size = size;
+
+    canvas.dataset.fontFamily = dordStyle.fontFamily;
+    canvas.dataset.color = dordStyle.color;
+    canvas.dataset.type = dord.dataset.dordType;
+
+    dord.parentNode.insertBefore(canvas, dord);
+    dord.style.display = "none";
+    renderCanvas(canvas);
+}
 function insertCanvi() {
-    var types = ["neon", "water", "vanilla", "shrink", "grow", "explode", "curve", "spin", "art", "freedom", "punch", "wiggle", "surprise", "slam", "squeeze", "pulse", "goodbye", "cross", "luck", "ding", "fill", "spill", "subwoofer", "spotlight", "fire"];
+    var types = ["blinds", "bars", "neon", "water", "vanilla", "shrink", "grow", "explode", "curve", "spin", "art", "freedom", "punch", "wiggle", "surprise", "slam", "squeeze", "pulse", "goodbye", "cross", "luck", "ding", "fill", "spill", "subwoofer", "spotlight", "fire"];
 
     var dords = Array.from(document.getElementsByClassName("dord"))
         // add the custom html tag versions
@@ -22,110 +54,89 @@ function insertCanvi() {
                 )));
 
     dords.forEach((dord) => {
-        let width = dord.offsetWidth;
-        let height = dord.getBoundingClientRect().height;
-        let x = dord.getBoundingClientRect().left;
-        let y = dord.getBoundingClientRect().top;
-
-        var canvas = document.createElement("canvas");
-        canvas.width = width * 2;
-
-        dordStyle = window.getComputedStyle(dord);
-
-        canvas.style.verticalAlign = "bottom";
-
-        canvas.style.width = width + "px";
-        canvas.height = height * 2;
-        canvas.style.height = height + "px";
-        canvas.classList.add("dord-canvas");
-        canvas.dataset.text = dord.textContent;
-        canvas.dataset.fontSize = dordStyle.fontSize;
-
-        var size = dordStyle.fontSize;
-        size = size.substring(0, size.length - 2);
-        canvas.dataset.trueSize = size * 2;
-        canvas.dataset.size = size;
-
-        canvas.dataset.fontFamily = dordStyle.fontFamily;
-        canvas.dataset.color = dordStyle.color;
-        canvas.dataset.type = dord.dataset.dordType;
-
-        dord.parentNode.insertBefore(canvas, dord);
-        dord.style.display = "none";
+        insertCanvas(dord);
     })
 
 }
+function renderCanvas(canvas){
+    var ctx = canvas.getContext("2d");
+    ctx.fillStyle = canvas.dataset.color;
 
-function renderCanvi() {
-    var canvi = document.getElementsByClassName("dord-canvas");
-    for (z = 0; z < canvi.length; z++) {
-        var canvas = canvi[z];
-        var ctx = canvas.getContext("2d");
-        ctx.fillStyle = canvas.dataset.color;
-
-        if (canvas.dataset.type == "explode") {
-            renderExplode(canvas);
-        }
-        if (canvas.dataset.type == "art") {
-            renderArt(canvas);
-        }
-        if (canvas.dataset.type == "freedom") {
-            renderFreedom(canvas);
-        }
-        if (canvas.dataset.type == "punch") {
-            renderPunch(canvas);
-        }
-        if (canvas.dataset.type == "wiggle") {
-            renderWiggle(canvas);
-        }
-        if (canvas.dataset.type == "surprise") {
-            renderSurprise(canvas);
-        }
-        if (canvas.dataset.type == "slam") {
-            renderSlam(canvas);
-        }
-        if (canvas.dataset.type == "squeeze") {
-            renderSqueeze(canvas);
-        }
-        if (canvas.dataset.type == "pulse") {
-            renderPulse(canvas);
-        }
-        if (canvas.dataset.type == "goodbye") {
-            renderGoodbye(canvas);
-        }
-        if (canvas.dataset.type == "cross") {
-            renderCross(canvas);
-        }
-        if (canvas.dataset.type == "luck") {
-            renderLuck(canvas);
-        }
-        if (canvas.dataset.type == "ding") {
-            renderDing(canvas);
-        }
-        if (canvas.dataset.type == "fill") {
-            renderFill(canvas);
-        }
-        if (canvas.dataset.type == "spill") {
-            renderSpill(canvas);
-        }
-        if (canvas.dataset.type == "subwoofer") {
-            renderSubwoofer(canvas);
-        }
-        if (canvas.dataset.type == "spotlight") {
-            renderSpotlight(canvas);
-        }
-        if (canvas.dataset.type == "fire") {
-            renderFire(canvas);
-        }
-        if (canvas.dataset.type == "water") {
-            renderWater(canvas);
-        }
-        if (canvas.dataset.type == "neon") {
-            renderNeon(canvas);
-        }
-
+    if (canvas.dataset.type == "explode") {
+        renderExplode(canvas);
     }
+    if (canvas.dataset.type == "art") {
+        renderArt(canvas);
+    }
+    if (canvas.dataset.type == "freedom") {
+        renderFreedom(canvas);
+    }
+    if (canvas.dataset.type == "punch") {
+        renderPunch(canvas);
+    }
+    if (canvas.dataset.type == "wiggle") {
+        renderWiggle(canvas);
+    }
+    if (canvas.dataset.type == "surprise") {
+        renderSurprise(canvas);
+    }
+    if (canvas.dataset.type == "slam") {
+        renderSlam(canvas);
+    }
+    if (canvas.dataset.type == "squeeze") {
+        renderSqueeze(canvas);
+    }
+    if (canvas.dataset.type == "pulse") {
+        renderPulse(canvas);
+    }
+    if (canvas.dataset.type == "goodbye") {
+        renderGoodbye(canvas);
+    }
+    if (canvas.dataset.type == "cross") {
+        renderCross(canvas);
+    }
+    if (canvas.dataset.type == "luck") {
+        renderLuck(canvas);
+    }
+    if (canvas.dataset.type == "ding") {
+        renderDing(canvas);
+    }
+    if (canvas.dataset.type == "fill") {
+        renderFill(canvas);
+    }
+    if (canvas.dataset.type == "spill") {
+        renderSpill(canvas);
+    }
+    if (canvas.dataset.type == "subwoofer") {
+        renderSubwoofer(canvas);
+    }
+    if (canvas.dataset.type == "spotlight") {
+        renderSpotlight(canvas);
+    }
+    if (canvas.dataset.type == "fire") {
+        renderFire(canvas);
+    }
+    if (canvas.dataset.type == "water") {
+        renderWater(canvas);
+    }
+    if (canvas.dataset.type == "neon") {
+        renderNeon(canvas);
+    }
+    if (canvas.dataset.type == "bars") {
+        renderBars(canvas);
+    }
+    if (canvas.dataset.type == "blinds") {
+        renderBlinds(canvas);
+    }
+
 }
+// function renderCanvi() {
+//     var canvi = document.getElementsByClassName("dord-canvas");
+//     for (z = 0; z < canvi.length; z++) {
+//         var canvas = canvi[z];
+//         renderCanvas(canvas);
+//     }
+// }
 
 function renderArt(canvas) {
     var ctx = canvas.getContext("2d");
@@ -180,6 +191,9 @@ function renderPunch(canvas) {
 }
 
 function renderWiggle(canvas, frame = 0) {
+    if(!document.body.contains(canvas)){
+        return;
+    }
     var ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     var size = canvas.dataset.size;
@@ -201,6 +215,9 @@ function renderWiggle(canvas, frame = 0) {
 }
 
 function renderSurprise(canvas, frame = 0) {
+    if(!document.body.contains(canvas)){
+        return;
+    }
     if (!isScrolledIntoView(canvas)) {
         window.requestAnimationFrame(function () {
             frame = 0
@@ -223,7 +240,7 @@ function renderSurprise(canvas, frame = 0) {
         x += ctx.measureText(text[i]).width + (ctx.measureText(text).width / (text.length * 120));
     }
     window.requestAnimationFrame(function () {
-        frame++
+        frame+=(canvas.width * (1/200))
         if (frame > canvas.width) {
             frame = 0
         }
@@ -232,6 +249,9 @@ function renderSurprise(canvas, frame = 0) {
 }
 
 function renderSlam(canvas, frame = 0) {
+    if(!document.body.contains(canvas)){
+        return;
+    }
     if (!isScrolledIntoView(canvas)) {
         window.requestAnimationFrame(function () {
             frame = 0
@@ -253,7 +273,7 @@ function renderSlam(canvas, frame = 0) {
         x += ctx.measureText(text[i]).width + (ctx.measureText(text).width / (text.length * 120));
     }
     window.requestAnimationFrame(function () {
-        frame++
+        frame+=(canvas.width * (1/200))
         if (frame > canvas.width) {
             frame = 0
         }
@@ -262,6 +282,9 @@ function renderSlam(canvas, frame = 0) {
 }
 
 function renderGoodbye(canvas, frame = 0) {
+    if(!document.body.contains(canvas)){
+        return;
+    }
     if (!isScrolledIntoView(canvas)) {
         window.requestAnimationFrame(function () {
             frame = 0
@@ -286,6 +309,9 @@ function renderGoodbye(canvas, frame = 0) {
 }
 
 function renderPulse(canvas, frame = 0) {
+    if(!document.body.contains(canvas)){
+        return;
+    }
     if (!isScrolledIntoView(canvas)) {
         window.requestAnimationFrame(function () {
             frame = 0
@@ -309,6 +335,9 @@ function renderPulse(canvas, frame = 0) {
 }
 
 function renderSqueeze(canvas, frame = 0) {
+    if(!document.body.contains(canvas)){
+        return;
+    }
     if (!isScrolledIntoView(canvas)) {
         window.requestAnimationFrame(function () {
             frame = 0
@@ -332,6 +361,9 @@ function renderSqueeze(canvas, frame = 0) {
 }
 
 function renderCross(canvas, frame = 0) {
+    if(!document.body.contains(canvas)){
+        return;
+    }
     if (!isScrolledIntoView(canvas)) {
         window.requestAnimationFrame(function () {
             frame = 0
@@ -365,6 +397,9 @@ function renderCross(canvas, frame = 0) {
 }
 
 function renderLuck(canvas, frame = 0, iteration = 0, slots = []) {
+    if(!document.body.contains(canvas)){
+        return;
+    }
     var icons = ["🍒", "🔔", "🎲", "🍀"];
     if (!isScrolledIntoView(canvas)) {
         window.requestAnimationFrame(function () {
@@ -399,7 +434,7 @@ function renderLuck(canvas, frame = 0, iteration = 0, slots = []) {
         x += ctx.measureText(text[i]).width + (ctx.measureText(text).width / (text.length * 120));
     }
     window.requestAnimationFrame(function () {
-        frame += (10 - (iteration * 2));
+        frame += (fontSize / 15 - (iteration * 2));
         if (frame > (fontSize * 4)) {
             frame = 0;
             iteration++;
@@ -421,6 +456,9 @@ function renderLuck(canvas, frame = 0, iteration = 0, slots = []) {
 }
 
 function renderDing(canvas, frame = 0) {
+    if(!document.body.contains(canvas)){
+        return;
+    }
     if (!isScrolledIntoView(canvas)) {
         window.requestAnimationFrame(function () {
             frame = 0
@@ -450,6 +488,9 @@ function renderDing(canvas, frame = 0) {
 }
 
 function renderFill(canvas, frame = 0) {
+    if(!document.body.contains(canvas)){
+        return;
+    }
     if (!isScrolledIntoView(canvas)) {
         window.requestAnimationFrame(function () {
             frame = 0
@@ -457,6 +498,7 @@ function renderFill(canvas, frame = 0) {
         });
         return;
     }
+
     var ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     var size = canvas.dataset.size;
@@ -474,7 +516,9 @@ function renderFill(canvas, frame = 0) {
 }
 
 function renderSpill(canvas, frame = 0) {
-
+    if(!document.body.contains(canvas)){
+        return;
+    }
     if (!isScrolledIntoView(canvas)) {
         window.requestAnimationFrame(function () {
             frame = 0
@@ -499,6 +543,9 @@ function renderSpill(canvas, frame = 0) {
 }
 
 function renderSubwoofer(canvas, frame = 0) {
+    if(!document.body.contains(canvas)){
+        return;
+    }
     if (!isScrolledIntoView(canvas)) {
         window.requestAnimationFrame(function () {
             frame = 0
@@ -525,6 +572,9 @@ function renderSubwoofer(canvas, frame = 0) {
 }
 
 function renderSpotlight(canvas, frame = 0, direction = 1) {
+    if(!document.body.contains(canvas)){
+        return;
+    }
     if (!isScrolledIntoView(canvas)) {
         window.requestAnimationFrame(function () {
             frame = 0
@@ -659,6 +709,9 @@ function renderWater(canvas) {
         }
 
         function apply() {
+            if(!document.body.contains(canvas)){
+                return;
+            }
             var r, T, x, y, xs, ys, dest, src;
             r = result.data;
             T = frames * interval * frequency / 1000;
@@ -672,7 +725,7 @@ function renderWater(canvas) {
                     src = (y + ys) * stride + (x + xs) * 4;
                     r[dest] = pixels[src];
                     r[dest + 1] = pixels[src + 1];
-                    r[dest + 2] = pixels[src + 2];
+                    r[dest + 2] = pixels[src + 2] + 50;
                     r[dest + 3] = pixels[src + 3];
                 }
             }
@@ -696,6 +749,9 @@ function renderWater(canvas) {
 
 
 function renderNeon(canvas, frame = 5) {
+    if(!document.body.contains(canvas)){
+        return;
+    }
     if (!isScrolledIntoView(canvas)) {
         window.requestAnimationFrame(function () {
             frame = 0
@@ -725,5 +781,100 @@ function renderNeon(canvas, frame = 5) {
     });
 }
 
+function renderBars(canvas) {
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    var size = canvas.dataset.size;
+    ctx.font = size * 2 + "px " + canvas.dataset.fontFamily;
+    ctx.fillText(canvas.dataset.text, 0, size * 1.75);
+    const originalPixelsArray = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+    drawBars(0);
+    
+    function drawBars(frame) {
+        if(!document.body.contains(canvas)){
+            return;
+        }
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillText(canvas.dataset.text, 0, size * 1.75);
+        ctx.beginPath();
+        var stride = canvas.width * 4
+        console.log(frame);
+        for (var x = 0 + Math.abs(frame) ; x < canvas.width; x+=4) {
+            var last = null;
+            for (var y = 0 ; y < canvas.height; y+=1) {
+                var dest = y * stride + x * 4;
+                if (originalPixelsArray[dest + 3] != 0) {
+                    if ((last == null) || (y - last > 1)) {
+                        ctx.moveTo(x,y);
+                        last = y;
+                    }
+                    else{
+                        last = y;
+                        ctx.lineTo(x,y);
+                    }
+                }
+            }
+        }
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        setTimeout(function () {
+            frame += 1
+            if(frame > 3){
+                frame = 0 ;
+            }
+            drawBars(frame);
+        }, 50);
+    }
+}
+
+function renderBlinds(canvas) {
+        var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    var size = canvas.dataset.size;
+    ctx.font = size * 2 + "px " + canvas.dataset.fontFamily;
+    ctx.fillText(canvas.dataset.text, 0, size * 1.75);
+    const originalPixelsArray = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+    drawBlinds(0);
+    
+    function drawBlinds(frame) {
+        if(!document.body.contains(canvas)){
+            return;
+        }
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillText(canvas.dataset.text, 0, size * 1.75);
+        ctx.beginPath();
+        var stride = canvas.width * 4
+        console.log(frame);
+        for (var y = 0 + Math.abs(frame) ; y < canvas.height; y+=4) {
+            var last = null;
+            for (var x = 0 ; x < canvas.width; x+=1) {
+                var dest = y * stride + x * 4;
+                if (originalPixelsArray[dest + 3] != 0) {
+                    if ((last == null) || (x - last > 1)) {
+                        ctx.moveTo(x,y);
+                        last = x;
+                    }
+                    else{
+                        last = x;
+                        ctx.lineTo(x,y);
+                    }
+                }
+            }
+        }
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        setTimeout(function () {
+            frame += 1
+            if(frame > 3){
+                frame = 0 ;
+            }
+            drawBlinds(frame);
+        }, 50);
+    }
+}
 insertCanvi();
-renderCanvi();
+// renderCanvi();

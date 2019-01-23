@@ -4,15 +4,6 @@
 <head>
     <meta charset="utf-8">
     <style>
-        @keyframes drift {
-            from {}
-
-            to {
-                transform: translateX(5em) translateY(10em) rotateZ(90deg);
-            }
-        }
-
-
         .bmc-button img {
             width: 27px !important;
             margin-bottom: 1px !important;
@@ -74,9 +65,7 @@
         <br><br>
         <a class="bmc-button" target="_blank" href="https://www.buymeacoffee.com/JUARtBs4o">
             <img src="https://www.buymeacoffee.com/assets/img/BMC-btn-logo.svg" alt="Buy me a coffee" style="margin-right:10px">
-
             Buy me a coffee
-
         </a>
         <div>
             <wiggle>r e l a x</wiggle> <a href="https://github.com/jjkaufman/dord.js" target="blank">
@@ -86,12 +75,31 @@
     </div>
 
 
-    <ul style=" column-width:5em; font-size:3em;list-style-type:none; ">
-        <li>
+    <ul style=" column-width:8em; font-size:3em;list-style-type:none; ">
+        <li id="currentContainer" style="font-size:2.5em">
+            <fill id ="current">fill</fill>
+        </li>
+        <li style="font-size:2.5em">
+           <a href="#" onclick="changePage()"> <wiggle>next</wiggle></a>
+        </li>
+        <!-- <li>
             <wiggle>wiggle</wiggle>
         </li>
         <li>
+            <bars>bars</bars>
+        </li>
+        <li>
+            <blinds>blinds</blinds>
+        </li>
+        <li>
             <surprise>surprise</surprise>
+        </li> -->
+        
+        <!-- <li  style="font-size:3em">
+            <fire>&nbsp;fire</fire>
+        </li> -->
+        <!-- <li>
+            <spill>spill</spill>
         </li>
         <li>
             <slam>slam</slam>
@@ -102,20 +110,12 @@
         <li>
             <luck>luck</luck>
         </li>
-        <li>
-            <fire>&nbsp;fire</fire>
-        </li>
+       
         <li>
             <water>water</water>
         </li>
         <li>
             <ding>ding</ding>
-        </li>
-        <li>
-            <fill>fill</fill>
-        </li>
-        <li>
-            <spill>spill</spill>
         </li>
         <li>
             <subwoofer>subwoofer</subwoofer>
@@ -144,7 +144,7 @@
         </li>
         <li>
             <punch>punch</punch>
-        </li>
+        </li> -->
       
         </ol>
         <br> <br> <br> <br> <br>
@@ -156,6 +156,28 @@
 
         <script src="dord.js">
 
+        </script>
+        <script>
+            var showcaseIndex = 0;
+            var showcase = [
+                "blinds", "bars", "neon", "water",  "art", "freedom", "punch", "wiggle", "surprise", "slam", "squeeze", "pulse", "goodbye", "cross", "luck", "ding", "fill", "spill", "subwoofer", "spotlight", "fire"
+            ];
+            
+            function changePage(){
+                showcaseIndex++;
+                var container = document.getElementById('currentContainer');
+                while (container.firstChild) {
+                    container.removeChild(container.firstChild);
+                }
+                debugger
+                var d = document.createElement('SPAN');
+                d.classList.add('dord');
+                d.dataset.dordType = showcase[showcaseIndex];
+                d.innerText = showcase[showcaseIndex];
+                container.appendChild(d);
+                insertCanvas(d);
+                renderCanvi();
+            }
         </script>
 </body>
 
