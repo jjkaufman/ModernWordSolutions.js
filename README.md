@@ -12,7 +12,7 @@ Next, wrap your favorite words in Modern tags to give your Hypertext a 2019 flai
 
 <img src="https://i.imgur.com/kO0BA1H.png" width="120em">
 
-## Examples Modern Words
+## Example Modern Words
 
 `<fire>fire</fire>`
 
