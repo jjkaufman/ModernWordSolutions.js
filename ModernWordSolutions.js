@@ -750,7 +750,6 @@ function renderBars(canvas) {
         ctx.fillText(canvas.dataset.text, 0, size * 1.75);
         ctx.beginPath();
         var stride = canvas.width * 4
-        console.log(frame);
         for (var x = 0 + Math.abs(frame) ; x < canvas.width; x+=4) {
             var last = null;
             for (var y = 0 ; y < canvas.height; y+=1) {
@@ -798,7 +797,6 @@ function renderBlinds(canvas) {
         ctx.fillText(canvas.dataset.text, 0, size * 1.75);
         ctx.beginPath();
         var stride = canvas.width * 4
-        console.log(frame);
         for (var y = 0 + Math.abs(frame) ; y < canvas.height; y+=4) {
             var last = null;
             for (var x = 0 ; x < canvas.width; x+=1) {
