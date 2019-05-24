@@ -26,5 +26,7 @@ Next, wrap your favorite words in Modern tags to give your Hypertext a 2019 flai
 
 <img src="https://i.imgur.com/v5vyAY8.png" width="120em">
 
+View all examples: https://jjkaufman.github.io/ModernWordSolutions.js/
+
 ## Collect them all!
 blinds, bars, neon, water, vanilla, shrink, grow, explode, curve, spin, art, freedom, punch, wiggle, surprise, slam, squeeze, pulse, goodbye, cross, luck, ding, fill, spill, subwoofer, spotlight, fire
