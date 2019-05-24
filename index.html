@@ -3,53 +3,6 @@
 
 <head>
     <meta charset="utf-8">
-    <style>
-        .bmc-button img {
-            width: 27px !important;
-            margin-bottom: 1px !important;
-            box-shadow: none !important;
-            border: none !important;
-            vertical-align: middle !important;
-        }
-
-        .bmc-button {
-            line-height: 36px !important;
-            height: 37px !important;
-            text-decoration: none !important;
-            display: inline-flex !important;
-            color: #ffffff !important;
-            background-color: #BB5794 !important;
-            border-radius: 3px !important;
-            border: 1px solid transparent !important;
-            padding: 1px 9px !important;
-            font-size: .85em !important;
-            letter-spacing: 0.6px !important;
-            box-shadow: 0px 1px 2px rgba(190, 190, 190, 0.5) !important;
-            -webkit-box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;
-            margin: 0 auto !important;
-            font-family: Cookie, cursive !important;
-            -webkit-box-sizing: border-box !important;
-            box-sizing: border-box !important;
-            -o-transition: 0.3s all linear !important;
-            -webkit-transition: 0.3s all linear !important;
-            -moz-transition: 0.3s all linear !important;
-            -ms-transition: 0.3s all linear !important;
-            transition: 0.3s all linear !important;
-            position: fixed;
-            top:15px;
-            right:15px;
-        }
-
-        .bmc-button:hover,
-        .bmc-button:active,
-        .bmc-button:focus {
-            -webkit-box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;
-            text-decoration: none !important;
-            box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;
-            opacity: 0.85 !important;
-            color: #ffffff !important;
-        }
-    </style>
     <link href="https://fonts.googleapis.com/css?family=Cookie" rel="stylesheet">
 </head>
 
@@ -62,26 +15,16 @@
         <surprise>Welcome!</surprise>
         <art>ModernWordSolutions.js</art> is a <cross>library</cross>   
         <freedom>hyper text experience</freedom> for words.
-        <br><br>
-        <a class="bmc-button" target="_blank" href="https://www.buymeacoffee.com/JUARtBs4o">
-            <img src="https://www.buymeacoffee.com/assets/img/BMC-btn-logo.svg" alt="Buy me a coffee" style="margin-right:10px">
-            Buy me a coffee
-        </a>
         <div>
-            <a href="https://github.com/jjkaufman/dord.js" target="blank">
-                <wiggle> https://github.com/jjkaufman/dord.js</wiggle>
+            <a href="https://github.com/jjkaufman/ModernWordSolutions.js" target="blank" style="font-size:.75em;">
+                <wiggle>Click here to visit GitHub repo</wiggle>
             </a>
         </div>
     </div>
 
 
     <ul style=" column-width:8em; font-size:3em;list-style-type:none; ">
-        <!-- <li id="currentContainer" style="font-size:2.5em">
-            <fill id ="current">fill</fill>
-        </li>
-        <li style="font-size:2.5em">
-           <a href="#" onclick="changePage()"> <wiggle>next</wiggle></a>
-        </li> -->
+
         <li>
             <wiggle>wiggle</wiggle>
         </li>
@@ -147,37 +90,8 @@
         </li>
       
         </ol>
-        <br> <br> <br> <br> <br>
+        <script src="ModernWordSolutions.js">
 
-        <!-- 
-    <surprise>Wow!</surprise>
-    <art>You</art> are still here. <br> -->
-
-
-        <script src="dord.js">
-
-        </script>
-        <script>
-            var showcaseIndex = 0;
-            var showcase = [
-                "blinds", "bars", "neon", "water",  "art", "freedom", "punch", "wiggle", "surprise", "slam", "squeeze", "pulse", "goodbye", "cross", "luck", "ding", "fill", "spill", "subwoofer", "spotlight", "fire"
-            ];
-            
-            function changePage(){
-                showcaseIndex++;
-                var container = document.getElementById('currentContainer');
-                while (container.firstChild) {
-                    container.removeChild(container.firstChild);
-                }
-                debugger
-                var d = document.createElement('SPAN');
-                d.classList.add('dord');
-                d.dataset.dordType = showcase[showcaseIndex];
-                d.innerText = showcase[showcaseIndex];
-                container.appendChild(d);
-                insertCanvas(d);
-                renderCanvi();
-            }
         </script>
 </body>
 

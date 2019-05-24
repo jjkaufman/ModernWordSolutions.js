@@ -130,13 +130,6 @@ function renderCanvas(canvas){
     }
 
 }
-// function renderCanvi() {
-//     var canvi = document.getElementsByClassName("dord-canvas");
-//     for (z = 0; z < canvi.length; z++) {
-//         var canvas = canvi[z];
-//         renderCanvas(canvas);
-//     }
-// }
 
 function renderArt(canvas) {
     var ctx = canvas.getContext("2d");
