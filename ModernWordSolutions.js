@@ -870,4 +870,3 @@ function renderBlinds(canvas) {
     }
 }
 insertCanvi();
-// renderCanvi();
