@@ -63,7 +63,6 @@ function renderCanvas(canvas){
     ctx.fillStyle = canvas.dataset.color;
 
     const renderMap = {
-        "explode": renderExplode,
         "art": renderArt,
         "freedom": renderFreedom,
         "punch": renderPunch,
