@@ -62,73 +62,32 @@ function renderCanvas(canvas){
     var ctx = canvas.getContext("2d");
     ctx.fillStyle = canvas.dataset.color;
 
-    if (canvas.dataset.type == "explode") {
-        renderExplode(canvas);
-    }
-    if (canvas.dataset.type == "art") {
-        renderArt(canvas);
-    }
-    if (canvas.dataset.type == "freedom") {
-        renderFreedom(canvas);
-    }
-    if (canvas.dataset.type == "punch") {
-        renderPunch(canvas);
-    }
-    if (canvas.dataset.type == "wiggle") {
-        renderWiggle(canvas);
-    }
-    if (canvas.dataset.type == "surprise") {
-        renderSurprise(canvas);
-    }
-    if (canvas.dataset.type == "slam") {
-        renderSlam(canvas);
-    }
-    if (canvas.dataset.type == "squeeze") {
-        renderSqueeze(canvas);
-    }
-    if (canvas.dataset.type == "pulse") {
-        renderPulse(canvas);
-    }
-    if (canvas.dataset.type == "goodbye") {
-        renderGoodbye(canvas);
-    }
-    if (canvas.dataset.type == "cross") {
-        renderCross(canvas);
-    }
-    if (canvas.dataset.type == "luck") {
-        renderLuck(canvas);
-    }
-    if (canvas.dataset.type == "ding") {
-        renderDing(canvas);
-    }
-    if (canvas.dataset.type == "fill") {
-        renderFill(canvas);
-    }
-    if (canvas.dataset.type == "spill") {
-        renderSpill(canvas);
-    }
-    if (canvas.dataset.type == "subwoofer") {
-        renderSubwoofer(canvas);
-    }
-    if (canvas.dataset.type == "spotlight") {
-        renderSpotlight(canvas);
-    }
-    if (canvas.dataset.type == "fire") {
-        renderFire(canvas);
-    }
-    if (canvas.dataset.type == "water") {
-        renderWater(canvas);
-    }
-    if (canvas.dataset.type == "neon") {
-        renderNeon(canvas);
-    }
-    if (canvas.dataset.type == "bars") {
-        renderBars(canvas);
-    }
-    if (canvas.dataset.type == "blinds") {
-        renderBlinds(canvas);
+    const renderMap = {
+        "explode": renderExplode,
+        "art": renderArt,
+        "freedom": renderFreedom,
+        "punch": renderPunch,
+        "wiggle": renderWiggle,
+        "surprise": renderSurprise,
+        "slam": renderSlam,
+        "squeeze": renderSqueeze,
+        "pulse": renderPulse,
+        "goodbye": renderGoodbye,
+        "cross": renderCross,
+        "luck": renderLuck,
+        "ding": renderDing,
+        "fill": renderFill,
+        "spill": renderSpill,
+        "subwoofer": renderSubwoofer,
+        "spotlight": renderSpotlight,
+        "fire": renderFire,
+        "water": renderWater,
+        "neon": renderNeon,
+        "bars": renderBars,
+        "blinds": renderBlinds,
     }
 
+    renderMap[canvas.dataset.type](canvas);
 }
 
 function renderArt(canvas) {
